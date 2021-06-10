@@ -1,29 +1,25 @@
-const data =  [
-    {
-        question: "Est-ce-que j'aimes les frites ?",
-        answers: ["Salut", "BAHHH", "Infernal", "Oui"],
-        correctAnswer: "Oui"
-    },
-    {
-        question: "Est-ce-que j'aimes pas les frites ?",
-        answers: ["Salut", "Non", "Oui", "Salut"],
-        correctAnswer: "Non"
-    },
-    {
-        question: "Quand est-né Julien ?",
-        answers: ["21 février 2001", "21 février 1994", "9 janvier 2001", "Qui ?"],
-        correctAnswer: "21 février 2001"
-    },
-    {
-        question: "What is the name of the process that sends one qubit of information using two bits of classical information ?",
-        answers: ["Quantum Teleporation", "Quantum Entanglement", "Quantum Programming", "Super Dense Coding"],
-        correctAnswer: "Super Dense Coding"
-    }];
+const Question = require('../model/QuestionModel');
 
 const routes = async (fastify, options) => {
-    fastify.get('/', async (request, reply) => {
-        const tmp = Math.floor(Math.random() * data.length);
-        return data[tmp];
+    fastify.get('/questions', async (request, reply) => {
+        const questions = await Question.find({}, (err, docs) => {
+            return docs;
+        })
+        reply.send({status: true, data: questions});
+    })
+
+    fastify.get('/question/:id', async (request, reply) => {
+        const { id } = request.params;
+        const nbQuestion = await Question.countDocuments();
+        if (id >= 0 && id < nbQuestion) {
+            const question = await Question.findOne({"id": id}, (err, docs) => {
+                return docs;
+            })
+            console.log(id);
+            reply.send({status: true, data: question});
+        } else {
+            reply.send({status: false});
+        }
     })
 }
 
