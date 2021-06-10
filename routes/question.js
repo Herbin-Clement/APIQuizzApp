@@ -6,7 +6,7 @@ const routes = async (fastify, options) => {
             return docs;
         })
         reply.send({status: true, data: questions});
-    })
+    });
 
     fastify.get('/question/:id', async (request, reply) => {
         const { id } = request.params;
@@ -20,6 +20,14 @@ const routes = async (fastify, options) => {
         } else {
             reply.send({status: false});
         }
+    });
+
+    fastify.post('/question', async (request, reply) => {
+        const id = await Question.countDocuments();
+        const { question, goodAnswer, answers } = request.body;
+        const newQuestion = new Question({question, goodAnswer, answers, id});
+        newQuestion.save();
+        reply.send({status: true, data: newQuestion});
     })
 }
 
