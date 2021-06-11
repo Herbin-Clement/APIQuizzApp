@@ -23,9 +23,12 @@ const routes = async (fastify, options) => {
     });
 
     fastify.get('/random/:n', async (request, reply) => {
-        const ids = [];
+        let i = 0;
         const nbQuestion = await Question.countDocuments();
-    })
+        const { n } = request.params;
+        const ids = randomSample(0, nbQuestion, n);
+        reply.send({status: true, data: ids});
+    });
 
     fastify.post('/question', async (request, reply) => {
         const id = await Question.countDocuments();
@@ -37,7 +40,7 @@ const routes = async (fastify, options) => {
         } else {
             reply.send({status: false});
         }
-    })
+    });
 }
 
 module.exports = routes;
