@@ -22,6 +22,11 @@ const routes = async (fastify, options) => {
         }
     });
 
+    fastify.get('/random/:n', async (request, reply) => {
+        const ids = [];
+        const nbQuestion = await Question.countDocuments();
+    })
+
     fastify.post('/question', async (request, reply) => {
         const id = await Question.countDocuments();
         const { question, goodAnswer, answers } = request.body;
