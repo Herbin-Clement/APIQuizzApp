@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const dbConnection = mongoose.createConnection('mongodb://localhost:27017/test', {
+const dbConnection = mongoose.createConnection('mongodb://localhost:27017/QuizzApp', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,

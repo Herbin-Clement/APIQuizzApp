@@ -25,9 +25,13 @@ const routes = async (fastify, options) => {
     fastify.post('/question', async (request, reply) => {
         const id = await Question.countDocuments();
         const { question, goodAnswer, answers } = request.body;
-        const newQuestion = new Question({question, goodAnswer, answers, id});
-        newQuestion.save();
-        reply.send({status: true, data: newQuestion});
+        if (question && goodAnswer && answers) {
+            const newQuestion = new Question({question, goodAnswer, answers, id});
+            newQuestion.save();
+            reply.send({status: true, data: newQuestion});
+        } else {
+            reply.send({status: false});
+        }
     })
 }
 
