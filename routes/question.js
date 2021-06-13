@@ -1,3 +1,4 @@
+const { name } = require('../controllers/dbConnection');
 const Question = require('../model/QuestionModel');
 
 const routes = async (fastify, options) => {
@@ -31,12 +32,15 @@ const routes = async (fastify, options) => {
     })
 
     fastify.get('/question/:cat/:idCat', async (request, reply) => {
-        const { cat, idCat } = request.params;
-        const nbQuestion = await Question.count({"nameCat": cat});
+        const { nameCat, idCat } = request.params;
+        const nbQuestion = await Question.count({"nameCat": nameCat});
         if (idCat => 0 && idCat < nbQuestion) {
             const question = await Question.findOne({"idCat": idCat}, (err, docs) => {
                 return docs;
             })
+            reply.send({status: true, data: question});
+        } else {
+            reply.send({status: false});
         }
     });
 
@@ -49,10 +53,11 @@ const routes = async (fastify, options) => {
     });
 
     fastify.post('/question', async (request, reply) => {
+        const { question, goodAnswer, answers, nameCat } = request.body;
         const id = await Question.countDocuments();
-        const { question, goodAnswer, answers } = request.body;
-        if (question && goodAnswer && answers) {
-            const newQuestion = new Question({question, goodAnswer, answers, id});
+        const idCat = await Question.count({"nameCat": nameCat});
+        if (question && goodAnswer && answers && nameCat) {
+            const newQuestion = new Question({question, goodAnswer, answers, id, idCat, nameCat});
             newQuestion.save();
             reply.send({status: true, data: newQuestion});
         } else {
