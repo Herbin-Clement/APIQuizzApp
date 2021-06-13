@@ -22,6 +22,14 @@ const routes = async (fastify, options) => {
         }
     });
 
+    fastify.get('/question/:cat', async (request, reply) => {
+        const { cat } = request.params;
+        const questions = await Question.find({"idCat": cat}, (err, docs) => {
+            return docs;
+        });
+        reply.send({status: true, data: questions});
+    })
+
     fastify.get('/question/:cat/:idCat', async (request, reply) => {
         const { cat, idCat } = request.params;
         const nbQuestion = await Question.count({"nameCat": cat});
