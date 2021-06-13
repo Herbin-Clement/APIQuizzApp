@@ -14,14 +14,15 @@ const randomSample = (min, max, n) => {
     return ids;
 }
 
-// const categories = [
-//     {idCat: 0, nameCat: "Science"},
-//     {idCat: 1, nameCat: "Nature"},
-//     {idCat: 2, nameCat: "History"},
-//     {idCat: 3, nameCat: "Geographie"},
-//     {idCat: 4, nameCat: "Serie"},
-//     {idCat: 5, nameCat: "Film"},
-//     {idCat: 6, nameCat: "Music"},
-// ]
+const categories = [
+    {idCat: 0, nameCat: "Science"},
+    {idCat: 1, nameCat: "Nature"},
+    {idCat: 2, nameCat: "History"},
+    {idCat: 3, nameCat: "Geography"},
+    {idCat: 4, nameCat: "Serie"},
+    {idCat: 5, nameCat: "Film"},
+    {idCat: 6, nameCat: "Music"},
+    {idCat: 7, nameCat: "Sports"}
+]
 
 module.exports = { randomInt, randomSample }

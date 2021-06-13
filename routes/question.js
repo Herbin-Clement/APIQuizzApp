@@ -22,6 +22,16 @@ const routes = async (fastify, options) => {
         }
     });
 
+    fastify.get('/question/:cat/:idCat', async (request, reply) => {
+        const { cat, idCat } = request.params;
+        const nbQuestion = await Question.count({"nameCat": cat});
+        if (idCat => 0 && idCat < nbQuestion) {
+            const question = await Question.findOne({"idCat": idCat}, (err, docs) => {
+                return docs;
+            })
+        }
+    });
+
     fastify.get('/random/:n', async (request, reply) => {
         let i = 0;
         const nbQuestion = await Question.countDocuments();
