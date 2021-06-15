@@ -23,7 +23,7 @@ const routes = async (fastify, options) => {
         }
     });
 
-    fastify.get('/question/:cat', async (request, reply) => {
+    fastify.get('/question/category/:cat', async (request, reply) => {
         const { cat } = request.params;
         const questions = await Question.find({"idCat": cat}, (err, docs) => {
             return docs;
@@ -51,6 +51,11 @@ const routes = async (fastify, options) => {
         const ids = randomSample(0, nbQuestion, n);
         reply.send({status: true, data: ids});
     });
+
+    fastify.get('/categories', async (request, reply) => {
+        const categories = Question.distinct("nameCat");
+        reply.send({status: true, data: categories}); 
+    })
 
     fastify.post('/question', async (request, reply) => {
         const { question, goodAnswer, answers, nameCat } = request.body;
