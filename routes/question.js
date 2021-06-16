@@ -45,7 +45,7 @@ const routes = async (fastify, options) => {
      */
     fastify.get('/question/:nameCat/:idCat', async (request, reply) => {
         const { nameCat, idCat } = request.params;
-        const nbQuestion = await Question.count({"nameCat": nameCat});
+        const nbQuestion = await Question.countDocuments({"nameCat": nameCat});
         if (idCat => 0 && idCat < nbQuestion) {
             const question = await Question.findOne({"idCat": idCat}, (err, docs) => {
                 return docs;
@@ -81,7 +81,7 @@ const routes = async (fastify, options) => {
     fastify.post('/question', async (request, reply) => {
         const { question, goodAnswer, answers, nameCat } = request.body;
         const id = await Question.countDocuments();
-        const idCat = await Question.count({"nameCat": nameCat});
+        const idCat = await Question.countDocuments({"nameCat": nameCat});
         if (question && goodAnswer && answers && nameCat) {
             const newQuestion = new Question({question, goodAnswer, answers, id, idCat, nameCat});
             newQuestion.save();
